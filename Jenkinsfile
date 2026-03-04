@@ -2,13 +2,6 @@ pipeline {
     agent any
 
     stages {
-
-        stage('Clone Repository') {
-            steps {
-                git 'https://github.com/Hemza-Assebab/TP-Jenkins-Security.git'
-            }
-        }
-
         stage('Install Dependencies') {
             steps {
                 sh '''
