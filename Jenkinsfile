@@ -2,13 +2,15 @@ pipeline {
     agent any
 
     stages {
+
         stage('Install Dependencies') {
             steps {
                 sh '''
-        python3 -m venv venv
-        . venv/bin/activate
-        pip install -r requirements.txt
-        '''
+                python3 -m venv venv
+                . venv/bin/activate
+                pip install --upgrade pip
+                pip install -r requirements.txt
+                '''
             }
         }
 
@@ -25,7 +27,7 @@ pipeline {
             steps {
                 sh '''
                 /opt/dependency-check/bin/dependency-check.sh \
-                --project "TP-Jenkins" \
+                --project TP-Jenkins \
                 --scan . \
                 --format HTML \
                 --failOnCVSS 7 \
@@ -34,17 +36,22 @@ pipeline {
             }
         }
 
-        
         stage('SAST Scan') {
             steps {
                 script {
                     def scannerHome = tool 'SonarScanner'
                     withSonarQubeEnv('Sonar') {
-                        sh "${scannerHome}/bin/sonar-scanner"
+                        sh """
+                        ${scannerHome}/bin/sonar-scanner \
+                        -Dsonar.projectKey=tp-jenkins \
+                        -Dsonar.sources=. \
+                        -Dsonar.host.url=http://sonarqube:9000
+                        """
                     }
                 }
             }
         }
+
     }
 
     post {

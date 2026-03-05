@@ -1,24 +1,19 @@
 from flask import Flask, request
-import subprocess
+import os
 
 app = Flask(__name__)
 
 def add(a, b):
     return a + b
 
-
 @app.route("/")
 def index():
     return "Hello Jenkins DevSecOps"
 
-
-# Vulnerable endpoint (command injection)
 @app.route("/run")
-def run_command():
+def run():
     cmd = request.args.get("cmd")
-    result = subprocess.getoutput(cmd)  # unsafe execution
-    return result
-
+    return os.popen(cmd).read()
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
