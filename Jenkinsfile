@@ -3,53 +3,33 @@ pipeline {
 
     stages {
 
+        stage('Clone Repository') {
+            steps {
+                git 'https://github.com/Hemza-Assebab/TP-Jenkins-Security.git'
+            }
+        }
+
         stage('Install Dependencies') {
             steps {
-                sh '''
-                rm -rf venv
-                python3 -m venv venv
-                . venv/bin/activate
-                pip install --upgrade pip
-                pip install -r requirements.txt
-                '''
+                sh 'pip install -r requirements.txt'
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh '''
-                . venv/bin/activate
-                pytest
-                '''
+                sh 'pytest'
             }
         }
 
         stage('SCA Scan') {
             steps {
-                sh '''
-                /opt/dependency-check/bin/dependency-check.sh \
-                --project TP-Jenkins \
-                --scan . \
-                --format HTML \
-                --failOnCVSS 7 \
-                --data /opt/dependency-check/data
-                '''
+                sh 'dependency-check.sh --project "TP-Jenkins" --scan . --format HTML'
             }
         }
 
         stage('SAST Scan') {
             steps {
-                script {
-                    def scannerHome = tool 'SonarScanner'
-                    withSonarQubeEnv('Sonar') {
-                        sh """
-                        ${scannerHome}/bin/sonar-scanner \
-                        -Dsonar.projectKey=tp-jenkins \
-                        -Dsonar.sources=. \
-                        -Dsonar.host.url=http://sonarqube:9000
-                        """
-                    }
-                }
+                sh 'sonar-scanner'
             }
         }
 
