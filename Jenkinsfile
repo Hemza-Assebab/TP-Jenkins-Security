@@ -11,7 +11,7 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                sh 'pip install -r requirements.txt'
+                sh 'pip3 install -r requirements.txt'
             }
         }
 
@@ -23,7 +23,13 @@ pipeline {
 
         stage('SCA Scan') {
             steps {
-                sh 'dependency-check.sh --project "TP-Jenkins" --scan . --format HTML'
+                sh '''
+                dependency-check \
+                --project "TP-Jenkins" \
+                --scan . \
+                --format HTML \
+                --failOnCVSS 7
+                '''
             }
         }
 
