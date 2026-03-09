@@ -35,7 +35,8 @@ pipeline {
                 --project "TP-Jenkins" \
                 --scan . \
                 --format HTML \
-                --failOnCVSS 7
+                --failOnCVSS 7 \
+                --noupdate
                 '''
             }
         }
