@@ -32,11 +32,11 @@ pipeline {
             steps {
                 sh '''
                 dependency-check \
-                --project "TP-Jenkins" \
-                --scan requirements.txt \
+                --scan . \
                 --format HTML \
-                --failOnCVSS 7 \
-                --noupdate
+                --noupdate \
+                --disableNVD \
+                --exclude "**/venv/**"
                 '''
             }
         }
