@@ -30,8 +30,8 @@ pipeline {
 
         stage('SCA Scan') {
             steps {
-dependencyCheck additionalArguments: '--project TP-Jenkins --scan . --format HTML', 
-                                odcInstallation: 'DP-Check'            }
+                sh 'dependency-check.sh --project TP-Jenkins --scan . --format HTML'
+            }
         }
 
         stage('SAST Scan') {
