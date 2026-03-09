@@ -30,14 +30,7 @@ pipeline {
 
         stage('SCA Scan') {
             steps {
-                sh '''
-                dependency-check \
-                --scan . \
-                --format HTML \
-                --noupdate \
-                --disableNVD \
-                --exclude "**/venv/**"
-                '''
+                sh 'dependency-check.sh --project "TP-Jenkins" --scan . --format HTML'
             }
         }
 
