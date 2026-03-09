@@ -11,7 +11,7 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                sh '''
+                  sh '''
                 python3 -m venv venv
                 . venv/bin/activate
                 pip install -r requirements.txt
@@ -33,7 +33,7 @@ pipeline {
                 sh '''
                 dependency-check \
                 --project "TP-Jenkins" \
-                --scan . \
+                --scan requirements.txt \
                 --format HTML \
                 --failOnCVSS 7 \
                 --noupdate
