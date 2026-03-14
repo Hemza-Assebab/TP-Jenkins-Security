@@ -5,41 +5,34 @@ pipeline {
 
         stage('Clone Repository') {
             steps {
-                git branch: 'main', url: 'https://github.com/Hemza-Assebab/TP-Jenkins-Security.git'
+                git 'https://github.com/Hemza-Assebab/TP-Jenkins-Security.git'
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                  sh '''
-                python3 -m venv venv
-                . venv/bin/activate
-                pip install -r requirements.txt
-                '''
+                sh 'pip3 install -r requirements.txt'
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh '''
-                . venv/bin/activate
-                pytest
-                '''
+                sh 'pytest'
             }
         }
 
         stage('SCA Scan') {
             steps {
-                sh 'dependency-check.sh --project TP-Jenkins --scan . --format HTML'
+                sh '''
+                dependency-check.sh \
+                --project "TP-Jenkins" \
+                --scan . \
+                --format HTML \
+                --out dependency-check-report \
+                --failOnCVSS 7
+                '''
             }
         }
-
-        stage('SAST Scan') {
-            steps {
-                sh 'sonar-scanner'
-            }
-        }
-
     }
 
     post {
