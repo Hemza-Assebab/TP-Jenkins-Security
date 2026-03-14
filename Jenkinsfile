@@ -3,12 +3,6 @@ pipeline {
 
     stages {
 
-        stage('Clone Repository') {
-            steps {
-                git 'https://github.com/Hemza-Assebab/TP-Jenkins-Security.git'
-            }
-        }
-
         stage('Install Dependencies') {
             steps {
                 sh 'pip3 install -r requirements.txt'
@@ -28,16 +22,9 @@ pipeline {
                 --project "TP-Jenkins" \
                 --scan . \
                 --format HTML \
-                --out dependency-check-report \
                 --failOnCVSS 7
                 '''
             }
-        }
-    }
-
-    post {
-        failure {
-            echo 'Build failed due to errors or vulnerabilities'
         }
     }
 }
