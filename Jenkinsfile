@@ -31,6 +31,7 @@ pipeline {
                 --format HTML \
                 --out dependency-check-report \
                 --data /var/jenkins_home/dependency-check-data \
+                --nvdDatafeed https://dependency-check.github.io/DependencyCheck_Data/ \
                 --failOnCVSS 7
                 '''
             }
