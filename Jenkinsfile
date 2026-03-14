@@ -25,13 +25,16 @@ pipeline {
         stage('SCA Scan') {
             steps {
                 sh '''
+                mkdir -p dc-data
+                mkdir -p dependency-check-report
+
                 /opt/dependency-check/bin/dependency-check.sh \
                 --project "TP-Jenkins" \
                 --scan . \
                 --format HTML \
                 --out dependency-check-report \
-                --data /var/jenkins_home/dependency-check-data \
-                --nvdApiKey DB71A624-6D1F-F111-8369-129478FCB64D \
+                --data dc-data \
+                --noupdate \
                 --failOnCVSS 7
                 '''
             }
