@@ -30,6 +30,7 @@ pipeline {
                 --scan . \
                 --format HTML \
                 --out dependency-check-report \
+                --data /var/jenkins_home/dependency-check-data \
                 --failOnCVSS 7
                 '''
             }
