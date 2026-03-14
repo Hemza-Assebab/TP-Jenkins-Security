@@ -22,22 +22,14 @@ pipeline {
             }
         }
 
-        stage('SCA Scan') {
+        stage('SAST Scan') {
             steps {
                 sh '''
-                mkdir -p dependency-check-report
-
-                /opt/dependency-check/bin/dependency-check.sh \
-                --project "TP-Jenkins" \
-                --scan . \
-                --format HTML \
-                --out dependency-check-report \
-                --disableNvd \
-                --disableRetireJS \
-                --failOnCVSS 7
+                /opt/sonar-scanner/bin/sonar-scanner
                 '''
             }
         }
+
     }
 
     post {
