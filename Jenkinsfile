@@ -31,11 +31,11 @@ pipeline {
                 --format HTML \
                 --out dependency-check-report \
                 --data /var/jenkins_home/dependency-check-data \
+                --nvdApiKey DB71A624-6D1F-F111-8369-129478FCB64D \
                 --failOnCVSS 7
                 '''
             }
         }
-
     }
 
     post {
