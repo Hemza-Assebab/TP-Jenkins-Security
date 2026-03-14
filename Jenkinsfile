@@ -5,13 +5,20 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                sh 'pip3 install -r requirements.txt'
+                sh '''
+                python3 -m venv venv
+                . venv/bin/activate
+                pip install -r requirements.txt
+                '''
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh 'pytest'
+                sh '''
+                . venv/bin/activate
+                pytest
+                '''
             }
         }
 
@@ -25,6 +32,13 @@ pipeline {
                 --failOnCVSS 7
                 '''
             }
+        }
+
+    }
+
+    post {
+        failure {
+            echo 'Build failed due to errors or vulnerabilities'
         }
     }
 }
