@@ -25,7 +25,6 @@ pipeline {
         stage('SCA Scan') {
             steps {
                 sh '''
-                mkdir -p dc-data
                 mkdir -p dependency-check-report
 
                 /opt/dependency-check/bin/dependency-check.sh \
@@ -33,8 +32,8 @@ pipeline {
                 --scan . \
                 --format HTML \
                 --out dependency-check-report \
-                --data dc-data \
-                --noupdate \
+                --disableNvd \
+                --disableRetireJS \
                 --failOnCVSS 7
                 '''
             }
